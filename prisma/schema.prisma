@@ -19,15 +19,19 @@ enum LinkPrecedence {
 }
 
 model Contact {
-  id             Int            @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   phoneNumber    String?
   email          String?
-  linkedId       Int? // the ID of another Contact linked to this one
-  linkPrecedence LinkPrecedence @default(PRIMARY) // "primary" if it's the first Contact in th
-  createdAt      DateTime
+  linkedId       Int?
+  linkPrecedence LinkPrecedence  @default(PRIMARY)
 
-  updatedAt DateTime
-  deletedAt DateTime?
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  deletedAt      DateTime?
+
+  // Define the self-relation
+  linkedContact  Contact?        @relation("ContactLink", fields: [linkedId], references: [id])
+  linkedContacts Contact[]       @relation("ContactLink")
 
   @@unique([phoneNumber, email])
 }
