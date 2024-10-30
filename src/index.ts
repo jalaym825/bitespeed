@@ -194,7 +194,7 @@ app.post(
         }
 
         // Handle case when both contacts exist but are different
-        if (contactWithEmail && contactWithPhone && contactWithEmail.id !== contactWithPhone.id) {
+        if (contactWithEmail && contactWithPhone && contactWithEmail.id !== contactWithPhone.id && (contactWithEmail.linkPrecedence === 'PRIMARY' && contactWithPhone.linkPrecedence === 'PRIMARY')) {
             await contactService.mergePrimaryContacts(contactWithEmail, contactWithPhone);
             primaryContactDetails = await contactService.getPrimaryContactDetails(contactWithEmail.id);
         }
